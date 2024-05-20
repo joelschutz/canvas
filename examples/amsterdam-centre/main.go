@@ -48,15 +48,15 @@ func fetch(filename string, bounds *osm.Bounds) (*osm.OSM, error) {
 }
 
 func draw(c *canvas.Context) {
-	xmin, xmax := 4.8884, 4.9090
-	ymin, ymax := 52.3659, 52.3779
+	xmin, xmax := 52.3659, 52.3779
+	ymin, ymax := 4.8884, 4.9090
 
-	xmid := xmin + (xmax-xmin)/2.0
-	ams0, err := fetch("ams0.osm", &osm.Bounds{ymin, ymax, xmin, xmid})
+	ymid := ymin + (ymax-ymin)/2.0
+	ams0, err := fetch("ams0.osm", &osm.Bounds{xmin, xmax, ymin, ymid})
 	if err != nil {
 		panic(err)
 	}
-	ams1, err := fetch("ams1.osm", &osm.Bounds{ymin, ymax, xmid, xmax})
+	ams1, err := fetch("ams1.osm", &osm.Bounds{xmin, xmax, ymid, ymax})
 	if err != nil {
 		panic(err)
 	}
@@ -174,7 +174,7 @@ func draw(c *canvas.Context) {
 
 	xscale := 100.0 / (xmax - xmin)
 	yscale := 100.0 / (ymax - ymin)
-	view := canvas.Identity.Translate(0.0, 0.0).Scale(xscale, yscale).Translate(-xmin, -ymin)
+	view := canvas.Identity.Translate(0.0, 0.0).Scale(yscale, xscale).Translate(-ymin, -xmin)
 
 	c.SetStrokeWidth(0.1)
 	catOrder := []string{"water", "route_pedestrian", "route_residential", "route_secondary", "route_primary", "route_transit", "park", "building"}
